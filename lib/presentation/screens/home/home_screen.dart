@@ -19,7 +19,7 @@ Widget selectedWidget=const CategoriesTab();
     return  SafeArea(
       child: Scaffold(
         appBar: AppBar(
-      title: const Text(StringsManager.appBarTitle),
+      title:  Text(StringsManager.appBarTitle),
         ),
         drawer: HomeDrawer(
           onDrawerItemClicked: onDrawerItemClicked,
