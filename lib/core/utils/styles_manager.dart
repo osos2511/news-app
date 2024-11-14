@@ -9,4 +9,6 @@ class AppStyles
   static TextStyle drawerTitleStyle=GoogleFonts.poppins(fontWeight: FontWeight.w700,fontSize: 24.sp,color: ColorsManager.white);
   static TextStyle categoriesTitleStyle=GoogleFonts.poppins(fontWeight: FontWeight.w700,fontSize: 24.sp,color: ColorsManager.black);
   static TextStyle settingsTitleStyle=GoogleFonts.poppins(fontWeight: FontWeight.w700,fontSize: 24.sp,color: ColorsManager.black);
+  static TextStyle categoryTitle=GoogleFonts.exo(fontWeight: FontWeight.w400,fontSize: 22.sp,color: ColorsManager.white);
+
 }
