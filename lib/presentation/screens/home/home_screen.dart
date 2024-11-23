@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/core/utils/assets_manager.dart';
 import 'package:news_app/core/utils/strings_manager.dart';
 import 'package:news_app/data_model/category_Dm/category_Dm.dart';
 import 'package:news_app/presentation/screens/home/tabs/categories_tab/categories_tab.dart';
 import 'package:news_app/presentation/screens/home/tabs/category_details/category_details.dart';
 import 'package:news_app/presentation/screens/home/tabs/settings_tab/settings_tab.dart';
 import 'package:news_app/presentation/screens/home/widgets/home_drawer/home_drawer.dart';
+
+import '../../../core/utils/colors_manager.dart';
 
 class HomeScreen extends StatefulWidget {
    HomeScreen({super.key});
@@ -15,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 late Widget selectedWidget;
+String appBarTitle='News-App';
 @override
   void initState() {
     // TODO: implement initState
@@ -25,19 +29,26 @@ late Widget selectedWidget;
   @override
   Widget build(BuildContext context) {
     return  SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-      title: const Text(StringsManager.appBarTitle),
+      child: Container(
+        decoration: BoxDecoration(
+          color: ColorsManager.white,
+          image: DecorationImage(image: AssetImage(AssetsManager.bgMyApp))
         ),
-        drawer: HomeDrawer(
-          onDrawerItemClicked: onDrawerItemClicked,
+        child: Scaffold(
+          appBar: AppBar(
+        title:  Text(appBarTitle),
+          ),
+          drawer: HomeDrawer(
+            onDrawerItemClicked: onDrawerItemClicked,
+          ),
+          body: selectedWidget,
         ),
-        body: selectedWidget,
       ),
     );
   }
 void onCategoryClick(CategoryDm category){
     selectedWidget=CategoryDetails(categoryDm: category,);
+    appBarTitle=category.title;
     setState(() {
 
     });
