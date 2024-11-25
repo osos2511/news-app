@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/core/utils/assets_manager.dart';
+import 'package:news_app/core/utils/routes_manager.dart';
 import 'package:news_app/core/utils/strings_manager.dart';
 import 'package:news_app/data_model/category_Dm/category_Dm.dart';
 import 'package:news_app/presentation/screens/home/tabs/categories_tab/categories_tab.dart';
@@ -37,6 +38,11 @@ String appBarTitle='News-App';
         child: Scaffold(
           appBar: AppBar(
         title:  Text(appBarTitle),
+            actions: [
+              IconButton(onPressed: (){
+                Navigator.pushNamed(context, RoutesManager.searchRoute);
+              }, icon: Icon(Icons.search,size: 30)),
+            ],
           ),
           drawer: HomeDrawer(
             onDrawerItemClicked: onDrawerItemClicked,
