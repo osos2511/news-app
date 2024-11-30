@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:news_app/provider/search_provider.dart';
+import 'package:news_app/presentation/screens/home/widgets/search/viewModel/search_viewModel.dart';
 import 'package:provider/provider.dart';
-import '../../../../../data/model/articles_response/Article.dart';
-import '../../tabs/news/article_item_widget.dart';
+import '../../../../../../data/model/articles_response/Article.dart';
+import '../../../tabs/articles/widgets/article_item.dart';
 
-class SearchScreen extends StatelessWidget {
-  SearchScreen({super.key});
+class SearchView extends StatelessWidget {
+  SearchView({super.key});
   TextEditingController itemText = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => SearchProvider(),
-      child: Consumer<SearchProvider>(
+      create: (context) => SearchViewModel(),
+      child: Consumer<SearchViewModel>(
         builder: (context, value, child) {
           return Scaffold(
             appBar: AppBar(
@@ -45,7 +45,9 @@ class SearchScreen extends StatelessWidget {
                     ),
                     suffixIcon: IconButton(
                       onPressed: () {
-                        context.read<SearchProvider>().searchName(itemText.text);
+                        context
+                            .read<SearchViewModel>()
+                            .searchName(itemText.text);
                       },
                       icon: const Icon(
                         Icons.search,
@@ -59,15 +61,15 @@ class SearchScreen extends StatelessWidget {
                 ),
               ),
             ),
-            body: _buildSearchResults(context),
+            body: buildSearchResults(context),
           );
         },
       ),
     );
   }
 
-  Widget _buildSearchResults(BuildContext context) {
-    final searchProvider = Provider.of<SearchProvider>(context);
+  Widget buildSearchResults(BuildContext context) {
+    var searchProvider = Provider.of<SearchViewModel>(context);
 
     if (searchProvider.search?.isEmpty ?? true) {
       return const Center(
@@ -84,23 +86,21 @@ class SearchScreen extends StatelessWidget {
       );
     }
 
-    if (searchProvider.errorMessage.isNotEmpty) {
-      return Center(
+    if (searchProvider.errorMessage!=null) {
+      return const Center(
         child: Text(
-          searchProvider.errorMessage,
-          style: const TextStyle(fontSize: 16, color: Colors.red),
+          'Connection is not found',
+          style: TextStyle(fontSize: 16, color: Colors.red),
         ),
       );
     }
 
-    List<Article> articles = searchProvider.articles;
-    return Expanded(
-      child: ListView.builder(
-        itemBuilder: (context, index) => ArticleItemWidget(
-          article: articles[index],
-        ),
-        itemCount: articles.length,
+    List<Article> articles = searchProvider.articles!;
+    return ListView.builder(
+      itemBuilder: (context, index) => ArticlesItem(
+        article: articles[index],
       ),
+      itemCount: articles.length,
     );
   }
 }
