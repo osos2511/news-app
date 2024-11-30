@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/core/utils/assets_manager.dart';
 import 'package:news_app/core/utils/routes_manager.dart';
-import 'package:news_app/core/utils/strings_manager.dart';
 import 'package:news_app/data_model/category_Dm/category_Dm.dart';
 import 'package:news_app/presentation/screens/home/tabs/categories_tab/categories_tab.dart';
 import 'package:news_app/presentation/screens/home/tabs/category_details/category_details.dart';
 import 'package:news_app/presentation/screens/home/tabs/settings_tab/settings_tab.dart';
 import 'package:news_app/presentation/screens/home/widgets/home_drawer/home_drawer.dart';
-
 import '../../../core/utils/colors_manager.dart';
 
 class HomeScreen extends StatefulWidget {
-   HomeScreen({super.key});
+   const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -31,7 +29,7 @@ String appBarTitle='News-App';
   Widget build(BuildContext context) {
     return  SafeArea(
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: ColorsManager.white,
           image: DecorationImage(image: AssetImage(AssetsManager.bgMyApp))
         ),
@@ -41,7 +39,7 @@ String appBarTitle='News-App';
             actions: [
               IconButton(onPressed: (){
                 Navigator.pushNamed(context, RoutesManager.searchRoute);
-              }, icon: Icon(Icons.search,size: 30)),
+              }, icon: const Icon(Icons.search,size: 30)),
             ],
           ),
           drawer: HomeDrawer(
@@ -53,7 +51,7 @@ String appBarTitle='News-App';
     );
   }
 void onCategoryClick(CategoryDm category){
-    selectedWidget=CategoryDetails(categoryDm: category,);
+    selectedWidget=CategoryDetails(categoryDm: category);
     appBarTitle=category.title;
     setState(() {
 
@@ -63,9 +61,12 @@ void onCategoryClick(CategoryDm category){
     switch(item){
       case MenuItem.categories:{
        selectedWidget= CategoriesTab(onCategoryItemClicked: onCategoryClick,);
+       appBarTitle='News-App';
+
       }
       case MenuItem.settings:{
         selectedWidget=const SettingsTab();
+        appBarTitle='Settings';
       }
     }
     Navigator.pop(context);

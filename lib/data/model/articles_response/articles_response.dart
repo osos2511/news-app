@@ -1,5 +1,5 @@
 import 'Article.dart';
-
+//model
 class ArticlesResponse {
   String? status;
   num? totalResults;

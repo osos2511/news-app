@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/data/model/sources_response/source.dart';
-import 'package:news_app/presentation/screens/home/tabs/category_details/widgets/sources_widget/source_item_widget.dart';
+import 'package:news_app/presentation/screens/home/tabs/sources/widgets/source_widget.dart';
 
-import '../../../news/articles_list_widget.dart';
+import '../../articles/view/articles_view.dart';
 
-class SourcesWidget extends StatefulWidget {
-  SourcesWidget({super.key, required this.sources});
+class SourcesTabWidget extends StatefulWidget {
+  SourcesTabWidget({super.key, required this.sources});
   List<Source> sources;
 
   @override
-  State<SourcesWidget> createState() => _SourcesWidgetState();
+  State<SourcesTabWidget> createState() => _SourcesTabWidgetState();
 }
 
-class _SourcesWidgetState extends State<SourcesWidget> {
+class _SourcesTabWidgetState extends State<SourcesTabWidget> {
   int isSelectedIndex = 0;
 
   @override
@@ -33,14 +33,14 @@ class _SourcesWidgetState extends State<SourcesWidget> {
               dividerColor: Colors.transparent,
               tabs: widget.sources
                   .map(
-                    (source) => SourceItemWidget(
+                    (source) => SourceWidget(
                       source: source,
                       isSelected: widget.sources.indexOf(source) == isSelectedIndex,
                     ),
                   )
                   .toList(),
             )),
-        ArticlesListWidget(source:widget.sources[isSelectedIndex]),
+        ArticlesView(source:widget.sources[isSelectedIndex]),
       ],
     );
   }
