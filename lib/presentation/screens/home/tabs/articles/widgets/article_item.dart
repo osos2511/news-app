@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/core/utils/routes_manager.dart';
 import 'package:news_app/data/model/articles_response/Article.dart';
 
-class ArticleItemWidget extends StatelessWidget {
-  ArticleItemWidget({super.key, required this.article});
+class ArticlesItem extends StatelessWidget {
+  ArticlesItem({super.key, required this.article});
   Article article;
   @override
   Widget build(BuildContext context) {
@@ -31,6 +31,7 @@ class ArticleItemWidget extends StatelessWidget {
                     const Center(child: Icon(Icons.error)),
               ),
             ),
+            SizedBox(height: 10,),
             Text(
               article.source?.name ?? '',
               style: GoogleFonts.poppins(

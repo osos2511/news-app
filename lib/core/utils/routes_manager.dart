@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/presentation/screens/article_details/article_details.dart';
 import 'package:news_app/presentation/screens/home/home_screen.dart';
-import 'package:news_app/presentation/screens/home/widgets/search_item/search_screen.dart';
 import 'package:news_app/presentation/screens/splash/splash_screen.dart';
-
-import '../../data/model/articles_response/Article.dart';
+import '../../presentation/screens/home/widgets/search/view/search_view.dart';
 
 class RoutesManager{
   static const String splashRoute='/splash';
@@ -31,7 +29,7 @@ class RoutesManager{
       case searchRoute:{
 
         return MaterialPageRoute(
-          builder: (context) =>  SearchScreen(),);
+          builder: (context) =>  SearchView(),);
 
       }
     }

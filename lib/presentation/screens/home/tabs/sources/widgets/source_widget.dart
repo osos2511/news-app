@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news_app/data/model/sources_response/source.dart';
 
-class SourceItemWidget extends StatelessWidget {
-   SourceItemWidget({super.key,required this.source,required this.isSelected});
+class SourceWidget extends StatelessWidget {
+   SourceWidget({super.key,required this.source,required this.isSelected});
 Source source;
 bool isSelected;
   @override
