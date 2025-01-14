@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:news_app/data/api/api_manager/api_manager.dart';
+import 'package:news_app/data/data_source_impl/articles_data_source_impl.dart';
+import 'package:news_app/data/repository_impl/articles_repository_impl.dart';
+import 'package:news_app/domain/entities/article_entity.dart';
 import 'package:news_app/presentation/screens/home/widgets/search/viewModel/search_viewModel.dart';
 import 'package:provider/provider.dart';
 import '../../../../../../data/model/articles_response/Article.dart';
@@ -13,7 +17,9 @@ class SearchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => SearchViewModel(),
+      create: (context) => SearchViewModel(
+          articlesRepository: ArticlesRepositoryImpl(
+              dataSource: ArticlesApiDataSourceImpl(apiManager: ApiManager()))),
       child: Consumer<SearchViewModel>(
         builder: (context, value, child) {
           return Scaffold(
@@ -86,7 +92,7 @@ class SearchView extends StatelessWidget {
       );
     }
 
-    if (searchProvider.errorMessage!=null) {
+    if (searchProvider.errorMessage != null) {
       return const Center(
         child: Text(
           'Connection is not found',
@@ -95,7 +101,7 @@ class SearchView extends StatelessWidget {
       );
     }
 
-    List<Article> articles = searchProvider.articles!;
+    List<ArticleEntity> articles = searchProvider.articles!;
     return ListView.builder(
       itemBuilder: (context, index) => ArticlesItem(
         article: articles[index],

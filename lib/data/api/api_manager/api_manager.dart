@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:news_app/data/model/articles_response/Article.dart';
 import 'package:news_app/data/model/articles_response/articles_response.dart';
 import 'package:news_app/data/model/sources_response/SourcesResponse.dart';
 import 'package:news_app/data/model/sources_response/source.dart';
@@ -12,7 +13,7 @@ class ApiManager {
   static const String articlesEndPoint = '/v2/everything';
   static const String apiKey = '470af20fefcb46e588a00bdbce772b41';
 
-  static Future<Result<List<Source>>> getSources(String categoryId) async {
+  Future<Result<List<Source>>> getSources(String categoryId) async {
     Uri url = Uri.https(baseUrl, sourcesEndPoint, {
       'apiKey': apiKey,
       'category': categoryId,
@@ -23,7 +24,7 @@ class ApiManager {
       SourcesResponse sourcesResponse = SourcesResponse.fromJson(json);
       if (sourcesResponse.status == 'ok') {
         return Success(data: sourcesResponse.sources!);
-      } else{
+      } else {
         return ServerError(
             message: sourcesResponse.message!, code: sourcesResponse.message!);
       }
@@ -32,21 +33,59 @@ class ApiManager {
     }
   }
 
-  static Future<ArticlesResponse> getArticles(String sourceId) async {
+  Future<Result<List<Article>>> getArticles(String sourceId) async {
     Uri url = Uri.https(
-        baseUrl, articlesEndPoint, {'apiKey': apiKey, 'sources': sourceId});
-    http.Response serverResponse = await http.get(url);
-    var json = jsonDecode(serverResponse.body);
-    ArticlesResponse articlesResponse = ArticlesResponse.fromJson(json);
-    return articlesResponse;
+      baseUrl,
+      articlesEndPoint,
+      {'apiKey': apiKey, 'sources': sourceId},
+    );
+
+    try {
+      http.Response serverResponse = await http.get(url);
+
+      if (serverResponse.statusCode != 200) {
+        return ServerError(
+          message: "HTTP Error: ${serverResponse.statusCode}",
+          code: serverResponse.statusCode.toString(),
+        );
+      }
+
+      var json = jsonDecode(serverResponse.body);
+
+      ArticlesResponse articlesResponse = ArticlesResponse.fromJson(json);
+
+      if (articlesResponse.status == 'ok') {
+        return Success(data: articlesResponse.articles ?? []);
+      } else {
+        return ServerError(
+          message: articlesResponse.message ?? "Unknown server error",
+          code: "API_ERROR",
+        );
+      }
+    } catch (e) {
+      return Error(exception: Exception("Unexpected error: $e"));
+    }
   }
 
-  static Future<ArticlesResponse> getSearchNews(String query) async {
+  Future<Result<List<Article>>> getSearchNews(String query) async {
     Uri url =
         Uri.https(baseUrl, articlesEndPoint, {'apiKey': apiKey, 'q': query});
-    http.Response serverResponse = await http.get(url);
-    var json = jsonDecode(serverResponse.body);
-    ArticlesResponse articlesResponse = ArticlesResponse.fromJson(json);
-    return articlesResponse;
+   try{
+     http.Response serverResponse = await http.get(url);
+     var json = jsonDecode(serverResponse.body);
+     ArticlesResponse articlesResponse = ArticlesResponse.fromJson(json);
+     if (articlesResponse.status == 'ok') {
+       return Success(data: articlesResponse.articles ?? []);
+     } else {
+       return ServerError(
+         message: articlesResponse.message ?? "Unknown server error",
+         code: "API_ERROR",
+       );
+     }
+
+   }catch(e){
+     return Error(exception: Exception("Unexpected error: $e"));
+
+   }
   }
 }
