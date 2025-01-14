@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/data/api/api_manager/api_manager.dart';
-import 'package:news_app/data/model/articles_response/Article.dart';
+import 'package:news_app/domain/entities/article_entity.dart';
+import 'package:news_app/result.dart';
+
+import '../../../../../../domain/repository_contract/articles_repository_contract.dart';
 
 class SearchViewModel extends ChangeNotifier {
+  SearchViewModel({required this.articlesRepository});
+  ArticlesRepository articlesRepository;
   String? search;
   bool isLoading=false;
-  List<Article>?articles;
+  List<ArticleEntity>?articles;
   String? errorMessage;//Error from server when i get the data
 
   void searchName(String name) {
@@ -19,22 +24,19 @@ class SearchViewModel extends ChangeNotifier {
     }
   }
   Future<void>getAllSearchArticles(String query)async {
-    try{
+
       isLoading=true;
       notifyListeners();
-      var response=await ApiManager.getSearchNews(query);
+      var result=await articlesRepository.getNewsBySearch(query);
       isLoading=false;
-      if(response.status=='ok'){
-        articles=response.articles??[];
+      switch(result){
+
+        case Success<List<ArticleEntity>>():
+          Success(data: result.data);
+        case ServerError<List<ArticleEntity>>():
+          ServerError(message: result.message,code:result.code);
+        case Error<List<ArticleEntity>>():
+          Error(exception: result.exception);
       }
-      else{
-        errorMessage=response.message??'wrong in get the data';
-      }
-      notifyListeners();
-    }catch(e){
-      isLoading=false;
-      errorMessage='error occurred $e'.toString();//if i arrive to server
-      notifyListeners();
-    }
-  }
+}
 }

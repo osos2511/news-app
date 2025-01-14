@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/data/api/api_manager/api_manager.dart';
-import 'package:news_app/data/model/sources_response/source.dart';
+import 'package:news_app/domain/entities/source_entity.dart';
+import 'package:news_app/domain/repository_contract/sources_repository_contract.dart';
+import 'package:news_app/domain/use_cases/sources_use_case.dart';
 import 'package:news_app/result.dart';
 
 class SourcesViewModel extends ChangeNotifier {
-  List<Source>? sources;
+  GetSourcesUseCase sourcesUseCase;
+  SourcesViewModel({required this.sourcesUseCase});
+  List<SourceEntity>? sources;
   bool isLoading = false;
   String? errorMessage;
   void getSourcesByCategoryId(String categoryId) async {
       isLoading = true;
       notifyListeners();
-      var result = await ApiManager.getSources(categoryId);
+      var result = await sourcesUseCase.execute(categoryId);
       isLoading=false;
       switch (result) {
-        case Success<List<Source>>():
+        case Success<List<SourceEntity>>():
           sources = result.data;
-        case ServerError<List<Source>>():
+        case ServerError<List<SourceEntity>>():
           errorMessage = result.message;
-        case Error<List<Source>>():
+        case Error<List<SourceEntity>>():
         errorMessage=result.exception.toString();
       }
       notifyListeners();
