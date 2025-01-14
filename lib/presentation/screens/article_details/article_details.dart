@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:news_app/data/model/articles_response/Article.dart';
+import 'package:news_app/domain/entities/article_entity.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-
 import '../../../core/utils/assets_manager.dart';
 import '../../../core/utils/colors_manager.dart';
 
@@ -12,7 +11,7 @@ class ArticleDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Article article=ModalRoute.of(context)?.settings.arguments as Article;
+    ArticleEntity article=ModalRoute.of(context)?.settings.arguments as ArticleEntity;
     return Container(
       decoration: const BoxDecoration(
           color: ColorsManager.white,

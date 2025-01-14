@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/data/api/api_manager/api_manager.dart';
-import 'package:news_app/data/model/articles_response/Article.dart';
-import 'package:news_app/data/model/sources_response/source.dart';
+import 'package:news_app/domain/entities/article_entity.dart';
+import 'package:news_app/domain/use_cases/articles_use_case.dart';
+import 'package:news_app/result.dart';
+import '../../../../../../domain/repository_contract/articles_repository_contract.dart';
 
 class ArticlesViewModel extends ChangeNotifier{
-  List<Article>? articles;
+  ArticlesViewModel({required this.articlesUseCase});
+  GetArticlesUseCase articlesUseCase;
+  List<ArticleEntity>? articles;
   bool isLoading=false;
   String? errorMessage;
-  void getNewsBySource(String sourceId)async{
-    try{
-      isLoading=true;
-      notifyListeners();
-      var response=await ApiManager.getArticles(sourceId);
-      isLoading=false;
-      if(response.status=='ok'){
-        articles=response.articles;
-      }else{
-        errorMessage=response.message;
-      }
-      notifyListeners();
-    }catch(e){
-      isLoading=false;
-      errorMessage=e.toString();
-      notifyListeners();
+  void getNewsBySource(String sourceId) async {
+    isLoading = true;
+    notifyListeners();
+    var result = await articlesUseCase.execute(sourceId);
+    isLoading = false;
+    switch (result) {
+      case Success<List<ArticleEntity>>():
+        articles = result.data;
+      case ServerError<List<ArticleEntity>>():
+        errorMessage = result.message;
+      case Error<List<ArticleEntity>>():
+        errorMessage = result.exception.toString();
+
     }
+    notifyListeners();
   }
 }
