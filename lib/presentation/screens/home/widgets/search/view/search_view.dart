@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:news_app/core/utils/assets_manager.dart';
 import 'package:news_app/core/utils/di/di.dart';
 import 'package:news_app/presentation/screens/home/widgets/search/viewModel/search_viewModel.dart';
 import 'package:provider/provider.dart';
 import '../../../tabs/articles/widgets/article_item.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});
@@ -33,12 +36,19 @@ class _SearchViewState extends State<SearchView> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: viewModel,
-      child: Scaffold(
-        appBar: _buildAppBar(),
-        body: Consumer<SearchViewModel>(
-          builder: (context, viewModel, child) {
-            return _buildSearchResults(viewModel);
-          },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          image: DecorationImage(image: AssetImage(AssetsManager.bgMyApp)),
+        ),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: _buildAppBar(),
+          body: Consumer<SearchViewModel>(
+            builder: (context, viewModel, child) {
+              return _buildSearchResults(viewModel);
+            },
+          ),
         ),
       ),
     );
@@ -57,7 +67,7 @@ class _SearchViewState extends State<SearchView> {
           controller: itemText,
           onChanged: (value) => viewModel.searchName(value),
           decoration: InputDecoration(
-            hintText: 'Search Article',
+            hintText: AppLocalizations.of(context)!.searchTextField,
             hintStyle: GoogleFonts.poppins(
               color: const Color(0xff6B6B6B),
               fontWeight: FontWeight.w400,
@@ -92,9 +102,9 @@ class _SearchViewState extends State<SearchView> {
 
     final articles = viewModel.articles;
     if (articles == null || articles.isEmpty) {
-      return const Center(
+      return  Center(
         child: Text(
-          'No articles found. Please try another search term.',
+          AppLocalizations.of(context)!.search,
           style: TextStyle(fontSize: 16),
         ),
       );
