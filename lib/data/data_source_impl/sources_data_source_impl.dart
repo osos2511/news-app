@@ -1,11 +1,13 @@
+import 'package:injectable/injectable.dart';
 import 'package:news_app/data/api/api_manager/api_manager.dart';
 import 'package:news_app/data/data_source_contract/sources_data_source.dart';
 import 'package:news_app/data/model/sources_response/source.dart';
 import 'package:news_app/result.dart';
-
+@Injectable(as: SourcesDataSource)
 class SourcesApiDataSourceImpl extends SourcesDataSource{
   //step two
   ApiManager apiManager;
+  @factoryMethod
   SourcesApiDataSourceImpl({required this.apiManager});//constructor injection
   @override
   Future<Result<List<Source>>> getSources(String categoryId) async{

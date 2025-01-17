@@ -3,5 +3,4 @@ import 'package:news_app/result.dart';
 
 abstract class ArticlesRepository{
   Future<Result<List<ArticleEntity>>>getArticles(String sourceId);
-  Future<Result<List<ArticleEntity>>>getNewsBySearch(String query);
 }

@@ -1,112 +1,108 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:news_app/data/api/api_manager/api_manager.dart';
-import 'package:news_app/data/data_source_impl/articles_data_source_impl.dart';
-import 'package:news_app/data/repository_impl/articles_repository_impl.dart';
-import 'package:news_app/domain/entities/article_entity.dart';
+import 'package:news_app/core/utils/di/di.dart';
 import 'package:news_app/presentation/screens/home/widgets/search/viewModel/search_viewModel.dart';
 import 'package:provider/provider.dart';
-import '../../../../../../data/model/articles_response/Article.dart';
 import '../../../tabs/articles/widgets/article_item.dart';
 
-class SearchView extends StatelessWidget {
-  SearchView({super.key});
-  TextEditingController itemText = TextEditingController();
+class SearchView extends StatefulWidget {
+  const SearchView({super.key});
+
+  @override
+  State<SearchView> createState() => _SearchViewState();
+}
+
+class _SearchViewState extends State<SearchView> {
+  late final SearchViewModel viewModel;
+  final TextEditingController itemText = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel = getIt<SearchViewModel>();
+  }
+
+  @override
+  void dispose() {
+    itemText.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => SearchViewModel(
-          articlesRepository: ArticlesRepositoryImpl(
-              dataSource: ArticlesApiDataSourceImpl(apiManager: ApiManager()))),
-      child: Consumer<SearchViewModel>(
-        builder: (context, value, child) {
-          return Scaffold(
-            appBar: AppBar(
-              toolbarHeight: 70,
-              title: Container(
-                margin: REdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.white,
-                ),
-                child: TextFormField(
-                  controller: itemText,
-                  decoration: InputDecoration(
-                    hintText: 'Search Article',
-                    hintStyle: GoogleFonts.poppins(
-                      color: const Color(0xff6B6B6B),
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.sp,
-                    ),
-                    prefixIcon: IconButton(
-                      onPressed: () {
-                        itemText.clear();
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.green,
-                      ),
-                    ),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        context
-                            .read<SearchViewModel>()
-                            .searchName(itemText.text);
-                      },
-                      icon: const Icon(
-                        Icons.search,
-                        color: Colors.green,
-                      ),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            body: buildSearchResults(context),
-          );
-        },
+    return ChangeNotifierProvider.value(
+      value: viewModel,
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        body: Consumer<SearchViewModel>(
+          builder: (context, viewModel, child) {
+            return _buildSearchResults(viewModel);
+          },
+        ),
       ),
     );
   }
 
-  Widget buildSearchResults(BuildContext context) {
-    var searchProvider = Provider.of<SearchViewModel>(context);
+  AppBar _buildAppBar() {
+    return AppBar(
+      toolbarHeight: 70,
+      title: Container(
+        margin: REdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+        ),
+        child: TextFormField(
+          controller: itemText,
+          onChanged: (value) => viewModel.searchName(value),
+          decoration: InputDecoration(
+            hintText: 'Search Article',
+            hintStyle: GoogleFonts.poppins(
+              color: const Color(0xff6B6B6B),
+              fontWeight: FontWeight.w400,
+              fontSize: 14.sp,
+            ),
+            prefixIcon: IconButton(
+              onPressed: () => itemText.clear(),
+              icon: const Icon(Icons.close, color: Colors.green),
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-    if (searchProvider.search?.isEmpty ?? true) {
+  Widget _buildSearchResults(SearchViewModel viewModel) {
+    if (viewModel.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (viewModel.errorMessage != null) {
+      return Center(
+        child: Text(
+          viewModel.errorMessage!,
+          style: const TextStyle(fontSize: 16, color: Colors.red),
+        ),
+      );
+    }
+
+    final articles = viewModel.articles;
+    if (articles == null || articles.isEmpty) {
       return const Center(
         child: Text(
-          'Please enter a search term.',
+          'No articles found. Please try another search term.',
           style: TextStyle(fontSize: 16),
         ),
       );
     }
 
-    if (searchProvider.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    if (searchProvider.errorMessage != null) {
-      return const Center(
-        child: Text(
-          'Connection is not found',
-          style: TextStyle(fontSize: 16, color: Colors.red),
-        ),
-      );
-    }
-
-    List<ArticleEntity> articles = searchProvider.articles!;
     return ListView.builder(
-      itemBuilder: (context, index) => ArticlesItem(
-        article: articles[index],
-      ),
       itemCount: articles.length,
+      itemBuilder: (context, index) => ArticlesItem(article: articles[index]),
     );
   }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:news_app/domain/entities/source_entity.dart';
-import 'package:news_app/domain/repository_contract/sources_repository_contract.dart';
 import 'package:news_app/domain/use_cases/sources_use_case.dart';
 import 'package:news_app/result.dart';
 
+@injectable
 class SourcesViewModel extends ChangeNotifier {
   GetSourcesUseCase sourcesUseCase;
+  @factoryMethod
   SourcesViewModel({required this.sourcesUseCase});
   List<SourceEntity>? sources;
   bool isLoading = false;

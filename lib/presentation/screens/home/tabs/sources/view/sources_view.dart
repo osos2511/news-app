@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/data/api/api_manager/api_manager.dart';
-import 'package:news_app/data/data_source_impl/sources_data_source_impl.dart';
-import 'package:news_app/data/repository_impl/sources_repository_impl.dart';
+import 'package:news_app/core/utils/di/di.dart';
 import 'package:news_app/domain/entities/source_entity.dart';
-import 'package:news_app/domain/use_cases/sources_use_case.dart';
 import 'package:news_app/presentation/screens/home/tabs/sources/viewModel/sources_viewModel.dart';
 import 'package:provider/provider.dart';
-import '../../../../../../data/model/sources_response/source.dart';
 import '../../../../../../data_model/category_Dm/category_Dm.dart';
 import '../widgets/sources_tab_widget.dart';
 
@@ -20,7 +16,7 @@ class SourcesView extends StatefulWidget {
 }
 
 class _SourcesViewState extends State<SourcesView> {
-  var viewModel=SourcesViewModel(sourcesUseCase: GetSourcesUseCase(repository: SourcesRepositoryImpl(dataSource: SourcesApiDataSourceImpl(apiManager: ApiManager()))));
+  var viewModel=getIt<SourcesViewModel>();
   @override
   void initState() {
     // TODO: implement initState

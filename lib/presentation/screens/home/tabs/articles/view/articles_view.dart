@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/data/api/api_manager/api_manager.dart';
-import 'package:news_app/data/data_source_impl/articles_data_source_impl.dart';
-import 'package:news_app/data/repository_impl/articles_repository_impl.dart';
+import 'package:news_app/core/utils/di/di.dart';
 import 'package:news_app/domain/entities/source_entity.dart';
-import 'package:news_app/domain/use_cases/articles_use_case.dart';
 import 'package:provider/provider.dart';
-
 import '../widgets/article_item.dart';
 import '../viewModel/articles_viewModel.dart';
 
@@ -18,9 +14,7 @@ class ArticlesView extends StatefulWidget {
 }
 
 class _ArticlesViewState extends State<ArticlesView> {
-  var viewModel=ArticlesViewModel(
-      articlesUseCase: GetArticlesUseCase(repository: ArticlesRepositoryImpl(
-          dataSource: ArticlesApiDataSourceImpl(apiManager: ApiManager()))) );
+  var viewModel=getIt<ArticlesViewModel>();
   @override
   void initState() {
     // TODO: implement initState
