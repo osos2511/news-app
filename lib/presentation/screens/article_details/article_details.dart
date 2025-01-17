@@ -5,6 +5,8 @@ import 'package:news_app/domain/entities/article_entity.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../core/utils/assets_manager.dart';
 import '../../../core/utils/colors_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ArticleDetails extends StatelessWidget {
   const ArticleDetails({super.key});
@@ -18,6 +20,7 @@ class ArticleDetails extends StatelessWidget {
           image: DecorationImage(image: AssetImage(AssetsManager.bgMyApp))
       ),
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         appBar: AppBar(title: Text(article.title??''),),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 20),
@@ -47,7 +50,7 @@ class ArticleDetails extends StatelessWidget {
                     } else {
                       print("Can't launch $webUrl");
                     }
-                  }, child: Text('View Full Article',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14.sp,color: const Color(0xff42505C)),))),
+                  }, child: Text(AppLocalizations.of(context)!.viewFullArticle, style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14.sp,color: const Color(0xff42505C)),))),
             ],
           ),
         ),

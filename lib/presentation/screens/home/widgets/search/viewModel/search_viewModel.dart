@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:news_app/domain/entities/article_entity.dart';
-import 'package:news_app/domain/repository_contract/search_repository_contract.dart';
 import 'package:news_app/domain/use_cases/search_use_case.dart';
 import 'package:news_app/result.dart';
 @injectable

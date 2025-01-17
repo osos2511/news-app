@@ -7,6 +7,8 @@ import 'package:news_app/presentation/screens/home/tabs/category_details/categor
 import 'package:news_app/presentation/screens/home/tabs/settings_tab/settings_tab.dart';
 import 'package:news_app/presentation/screens/home/widgets/home_drawer/home_drawer.dart';
 import '../../../core/utils/colors_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class HomeScreen extends StatefulWidget {
    const HomeScreen({super.key});
@@ -34,7 +36,10 @@ String appBarTitle='News-App';
           image: DecorationImage(image: AssetImage(AssetsManager.bgMyApp))
         ),
         child: Scaffold(
+          backgroundColor: Colors.transparent,
           appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: Colors.white54,
         title:  Text(appBarTitle),
             actions: [
               IconButton(onPressed: (){
@@ -61,11 +66,11 @@ void onCategoryClick(CategoryDm category){
     switch(item){
       case MenuItem.categories:{
        selectedWidget= CategoriesTab(onCategoryItemClicked: onCategoryClick,);
-       appBarTitle='News-App';
+       appBarTitle=AppLocalizations.of(context)!.categories;
 
       }
       case MenuItem.settings:{
-        selectedWidget=const SettingsTab();
+        selectedWidget= SettingsTab();
         appBarTitle='Settings';
       }
     }

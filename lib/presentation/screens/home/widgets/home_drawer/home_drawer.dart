@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news_app/core/utils/colors_manager.dart';
-import 'package:news_app/core/utils/strings_manager.dart';
 import 'package:news_app/core/utils/styles_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 typedef OnDrawerItemClicked=void Function(MenuItem);
 class HomeDrawer extends StatelessWidget {
    HomeDrawer({super.key,required this.onDrawerItemClicked});
@@ -20,7 +21,7 @@ class HomeDrawer extends StatelessWidget {
               width: double.infinity,
               height: 110.h,
               alignment: Alignment.center,
-              child: Text(StringsManager.drawerTitle,style: AppStyles.drawerTitleStyle,)),
+              child: Text(AppLocalizations.of(context)!.newsApp,style: AppStyles.drawerTitleStyle,)),
           Padding(
             padding:  REdgeInsets.symmetric(horizontal: 10,vertical: 10),
             child: Column(
@@ -33,7 +34,7 @@ class HomeDrawer extends StatelessWidget {
                     children: [
                       const Icon(Icons.view_list,size: 35,),
                       SizedBox(width: 11.w,),
-                      Text(StringsManager.categoriesTitle,style: AppStyles.categoriesTitleStyle,),
+                      Text(AppLocalizations.of(context)!.categories,style: AppStyles.categoriesTitleStyle,),
                     ],
                   ),
                 ),
@@ -47,7 +48,7 @@ class HomeDrawer extends StatelessWidget {
                     children: [
                       const Icon(Icons.settings,size: 35,),
                       SizedBox(width: 11.w,),
-                      Text(StringsManager.settingsTitle,style: AppStyles.settingsTitleStyle,),
+                      Text(AppLocalizations.of(context)!.settingsTitle,style: AppStyles.settingsTitleStyle,),
                     ],
                   ),
                 ),
