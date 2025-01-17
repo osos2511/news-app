@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/core/utils/routes_manager.dart';
-import 'package:news_app/data/model/articles_response/Article.dart';
 import 'package:news_app/domain/entities/article_entity.dart';
 
 class ArticlesItem extends StatelessWidget {

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/data/api/api_manager/api_manager.dart';
+import 'package:injectable/injectable.dart';
 import 'package:news_app/domain/entities/article_entity.dart';
+import 'package:news_app/domain/repository_contract/search_repository_contract.dart';
+import 'package:news_app/domain/use_cases/search_use_case.dart';
 import 'package:news_app/result.dart';
-
-import '../../../../../../domain/repository_contract/articles_repository_contract.dart';
-
+@injectable
 class SearchViewModel extends ChangeNotifier {
-  SearchViewModel({required this.articlesRepository});
-  ArticlesRepository articlesRepository;
+  @factoryMethod
+  SearchViewModel({required this.searchUseCase});
+  SearchUseCase searchUseCase;
   String? search;
   bool isLoading=false;
   List<ArticleEntity>?articles;
@@ -27,16 +28,17 @@ class SearchViewModel extends ChangeNotifier {
 
       isLoading=true;
       notifyListeners();
-      var result=await articlesRepository.getNewsBySearch(query);
+      var result=await searchUseCase.execute(query);
       isLoading=false;
       switch(result){
 
         case Success<List<ArticleEntity>>():
-          Success(data: result.data);
+          articles=result.data;
         case ServerError<List<ArticleEntity>>():
-          ServerError(message: result.message,code:result.code);
+          errorMessage=result.message;
         case Error<List<ArticleEntity>>():
-          Error(exception: result.exception);
+      errorMessage=result.exception.toString();
       }
+      notifyListeners();
 }
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:news_app/domain/entities/article_entity.dart';
 import 'package:news_app/domain/use_cases/articles_use_case.dart';
 import 'package:news_app/result.dart';
-import '../../../../../../domain/repository_contract/articles_repository_contract.dart';
-
+@injectable
 class ArticlesViewModel extends ChangeNotifier{
+  @factoryMethod
   ArticlesViewModel({required this.articlesUseCase});
   GetArticlesUseCase articlesUseCase;
   List<ArticleEntity>? articles;
