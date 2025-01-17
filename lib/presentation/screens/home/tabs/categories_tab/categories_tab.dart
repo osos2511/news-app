@@ -6,15 +6,13 @@ typedef OnCategoryItemClicked=void Function(CategoryDm);
 class CategoriesTab extends StatelessWidget {
    CategoriesTab({super.key,required this.onCategoryItemClicked});
    OnCategoryItemClicked onCategoryItemClicked;
-List<CategoryDm>categoriesList=CategoryDm.getAllCategories();
   @override
   Widget build(BuildContext context) {
+    List<CategoryDm>categoriesList=CategoryDm.getAllCategories(context);
     return Container(
-      padding: REdgeInsets.all(8),
+      padding: REdgeInsets.all(10),
 child:Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
   children: [
-Text('Pick your category\nof interest',style: TextStyle(fontSize: 20),),
     Expanded(child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
