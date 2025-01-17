@@ -18,33 +18,40 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-late Widget selectedWidget;
-String appBarTitle='News-App';
-@override
+  late Widget selectedWidget;
+
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    selectedWidget=CategoriesTab(onCategoryItemClicked: onCategoryClick,);
+    selectedWidget = CategoriesTab(onCategoryItemClicked: onCategoryClick);
   }
 
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
+    String appBarTitle = selectedWidget is CategoriesTab
+        ? AppLocalizations.of(context)!.categories
+        : selectedWidget is SettingsTab
+        ? AppLocalizations.of(context)!.settingsPage
+        : selectedWidget is CategoryDetails
+        ? (selectedWidget as CategoryDetails).categoryDm.title
+        : AppLocalizations.of(context)!.todayNews;
+
+    return SafeArea(
       child: Container(
         decoration: const BoxDecoration(
           color: ColorsManager.white,
-          image: DecorationImage(image: AssetImage(AssetsManager.bgMyApp))
+          image: DecorationImage(image: AssetImage(AssetsManager.bgMyApp)),
         ),
         child: Scaffold(
-          backgroundColor: Colors.transparent,
           appBar: AppBar(
-            centerTitle: true,
-            backgroundColor: Colors.white54,
-        title:  Text(appBarTitle),
+            title: Text(appBarTitle),
             actions: [
-              IconButton(onPressed: (){
-                Navigator.pushNamed(context, RoutesManager.searchRoute);
-              }, icon: const Icon(Icons.search,size: 30)),
+              IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, RoutesManager.searchRoute);
+                },
+                icon: const Icon(Icons.search, size: 30),
+              ),
             ],
           ),
           drawer: HomeDrawer(
@@ -55,28 +62,24 @@ String appBarTitle='News-App';
       ),
     );
   }
-void onCategoryClick(CategoryDm category){
-    selectedWidget=CategoryDetails(categoryDm: category);
-    appBarTitle=category.title;
+
+  void onCategoryClick(CategoryDm category) {
     setState(() {
-
+      selectedWidget = CategoryDetails(categoryDm: category);
     });
-}
-  void onDrawerItemClicked(MenuItem item){
-    switch(item){
-      case MenuItem.categories:{
-       selectedWidget= CategoriesTab(onCategoryItemClicked: onCategoryClick,);
-       appBarTitle=AppLocalizations.of(context)!.categories;
+  }
 
+  void onDrawerItemClicked(MenuItem item) {
+    setState(() {
+      switch (item) {
+        case MenuItem.categories:
+          selectedWidget = CategoriesTab(onCategoryItemClicked: onCategoryClick);
+          break;
+        case MenuItem.settings:
+          selectedWidget = SettingsTab();
+          break;
       }
-      case MenuItem.settings:{
-        selectedWidget= SettingsTab();
-        appBarTitle='Settings';
-      }
-    }
+    });
     Navigator.pop(context);
-    setState(() {
-
-    });
   }
 }
