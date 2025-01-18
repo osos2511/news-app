@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:news_app/core/utils/assets_manager.dart';
 import 'package:news_app/core/utils/routes_manager.dart';
 import 'package:news_app/data_model/category_Dm/category_Dm.dart';
+import 'package:news_app/main.dart';
 import 'package:news_app/presentation/screens/home/tabs/categories_tab/categories_tab.dart';
 import 'package:news_app/presentation/screens/home/tabs/category_details/category_details.dart';
 import 'package:news_app/presentation/screens/home/tabs/settings_tab/settings_tab.dart';
 import 'package:news_app/presentation/screens/home/widgets/home_drawer/home_drawer.dart';
+import 'package:news_app/settings_provider/theme_provider.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/colors_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -38,19 +41,28 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return SafeArea(
       child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: ColorsManager.white,
-          image: DecorationImage(image: AssetImage(AssetsManager.bgMyApp)),
+
+          image: context.read<ThemeProvider>().currentTheme==ThemeMode.light?
+          DecorationImage(image: AssetImage(AssetsManager.bgMyApp),
+          colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.1), BlendMode.dstOut)
+          ):DecorationImage(image: AssetImage(AssetsManager.bgMyApp),
+              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.1), BlendMode.dstOver)
+          ),
+
         ),
         child: Scaffold(
+          backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: Text(appBarTitle),
+            centerTitle: true,
+            title: Text(appBarTitle,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600)),
             actions: [
               IconButton(
                 onPressed: () {
                   Navigator.pushNamed(context, RoutesManager.searchRoute);
                 },
-                icon: const Icon(Icons.search, size: 30),
+                icon:  Icon(Icons.search,),
               ),
             ],
           ),

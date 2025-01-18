@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:news_app/config/theme/my_theme.dart';
 import 'package:news_app/core/utils/routes_manager.dart';
 import 'package:news_app/settings_provider/language_provider.dart';
 import 'package:news_app/settings_provider/theme_provider.dart';
@@ -12,27 +13,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  ScreenUtilInit(
+    return ScreenUtilInit(
       designSize: const Size(412, 870),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) =>MaterialApp(
-        localizationsDelegates: [
+      builder: (context, child) => MaterialApp(
+        localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: [
+        supportedLocales: const [
           Locale('en'),
           Locale('ar'),
         ],
         locale: Locale(context.watch<LanguageProvider>().currentLang),
-        //locale: Locale('ar'),
         debugShowCheckedModeBanner: false,
         onGenerateRoute: RoutesManager.router,
-        initialRoute: RoutesManager.homeRoute,
+        initialRoute: RoutesManager.splashRoute,
         themeMode: context.watch<ThemeProvider>().currentTheme,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
       ),
     );
   }

@@ -14,14 +14,15 @@ class HomeDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Drawer(
       width: 285.w,
+      backgroundColor: Theme.of(context).drawerTheme.backgroundColor,
       child: Column(
         children: [
           Container(
-            color: ColorsManager.green,
+            color: Theme.of(context).indicatorColor,
               width: double.infinity,
               height: 110.h,
               alignment: Alignment.center,
-              child: Text(AppLocalizations.of(context)!.newsApp,style: AppStyles.drawerTitleStyle,)),
+              child: Text(AppLocalizations.of(context)!.newsApp,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 25),)),
           Padding(
             padding:  REdgeInsets.symmetric(horizontal: 10,vertical: 10),
             child: Column(

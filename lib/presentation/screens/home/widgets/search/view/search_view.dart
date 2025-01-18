@@ -75,7 +75,7 @@ class _SearchViewState extends State<SearchView> {
             ),
             prefixIcon: IconButton(
               onPressed: () => itemText.clear(),
-              icon: const Icon(Icons.close, color: Colors.green),
+              icon: const Icon(Icons.close, color: Colors.black),
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
