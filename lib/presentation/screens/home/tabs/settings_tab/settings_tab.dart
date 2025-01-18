@@ -27,33 +27,31 @@ class _SettingsTabState extends State<SettingsTab> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.only(top: 50,left: 10,right: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             AppLocalizations.of(context)!.theme,
-            style: Theme.of(context).textTheme.labelSmall,
+            style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),
           ),
           Container(
             width: double.infinity,
             height: 60,
             margin: const EdgeInsets.symmetric(vertical: 10),
             padding: const EdgeInsets.all(15),
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration:  BoxDecoration(
+              color: Theme.of(context).indicatorColor.withOpacity(0.7),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   selectedTheme ?? '',
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(color: ColorsManager.grey, fontSize: 16),
+                  style: TextStyle(color: Colors.white),
                 ),
                 DropdownButton<String>(
+                  iconEnabledColor: Colors.white,
                   underline: const SizedBox.shrink(),
                   dropdownColor: Colors.white,
                   elevation: 0,
@@ -87,28 +85,26 @@ class _SettingsTabState extends State<SettingsTab> {
           ),
           Text(
             AppLocalizations.of(context)!.language,
-            style: Theme.of(context).textTheme.labelSmall,
+            style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),
           ),
           Container(
             width: double.infinity,
             height: 60,
             margin: const EdgeInsets.symmetric(vertical: 10),
             padding: const EdgeInsets.all(15),
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration:  BoxDecoration(
+              color: Theme.of(context).indicatorColor.withOpacity(0.7),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   selectedLang ?? '',
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(color: ColorsManager.black, fontSize: 16),
+                    style: TextStyle(color: Colors.white),
                 ),
                 DropdownButton<String>(
-                  underline: SizedBox.shrink(),
+                    iconEnabledColor: Colors.white,
+                    underline: SizedBox.shrink(),
                   dropdownColor: Colors.white,
                   elevation: 0,
                   padding: const EdgeInsets.all(0),
